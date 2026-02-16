@@ -1,0 +1,33 @@
+{
+  "name": "webhooks-back-end",
+  "version": "1.0.0",
+  "description": "Back-end da API de webhooks para recebimento, armazenamento e inspeção de eventos HTTP",
+  "main": "dist/server.js",
+  "keywords": [
+    "webhook",
+    "webhooks",
+    "api",
+    "backend",
+    "nodejs",
+    "fastify",
+    "http",
+    "rest",
+    "events",
+    "debug"
+  ],
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "author": "Matheus Pereira da Silva",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^5.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.33",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
