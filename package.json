@@ -1,0 +1,27 @@
+{
+  "name": "webhooks-inspactor",
+  "version": "1.0.0",
+  "description": "Interpretador de webhook para inspeção e debug de requisições HTTP",
+  "keywords": [
+    "webhook",
+    "webhooks",
+    "api",
+    "http",
+    "request",
+    "debug",
+    "inspector",
+    "nodejs",
+    "monorepo",
+    "workspace"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "author": "Matheus Pereira da Silva",
+  "license": "ISC"
+}
+
