@@ -1,1 +1,1 @@
-import * from './webhooks' 
+export * from "./webhooks"
