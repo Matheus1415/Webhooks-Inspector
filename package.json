@@ -22,6 +22,8 @@
     "web"
   ],
   "author": "Matheus Pereira da Silva",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "uuidv7": "^1.1.0"
+  }
 }
-
