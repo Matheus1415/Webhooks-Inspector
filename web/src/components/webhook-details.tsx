@@ -13,12 +13,28 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
   const { data } = useSuspenseQuery({
     queryKey: ['webhook', id],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3333/api/webhooks/${id}`)
-      const data = await response.json()
+      const response = await fetch(
+        `http://localhost:3333/api/webhooks/${id}`,
+      )
 
-      return webhookDetailsSchema.parse(data)
+      if (!response.ok) {
+        throw new Error('Failed to fetch webhook details')
+      }
+
+      const json = await response.json()
+
+      const parsed = webhookDetailsSchema.safeParse(json)
+
+      if (!parsed.success) {
+        console.log(parsed.error)
+        throw new Error('Invalid webhook response format')
+      }
+
+
+      return parsed.data
     },
   })
+
 
   const overviewData = [
     { key: 'Method', value: data.method },

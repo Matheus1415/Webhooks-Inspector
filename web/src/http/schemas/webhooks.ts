@@ -13,15 +13,21 @@ export const webhookListSchema = z.object({
 })
 
 export const webhookDetailsSchema = z.object({
-  id: z.uuidv7(),
+  id: z.string().uuid(),
   method: z.string(),
   pathname: z.string(),
   ip: z.string(),
-  statusCode: z.number(),
-  contentType: z.string().nullable(),
-  contentLength: z.number().nullable(),
-  queryParams: z.record(z.string(), z.string()).nullable(),
+
+  statusCode: z.number().optional().nullable(),
+
+  contentType: z.string().optional().nullable(),
+  contentLength: z.number().optional().nullable(),
+
+  queryParams: z.record(z.string(), z.string()).optional().nullable(),
+
   headers: z.record(z.string(), z.string()),
-  body: z.string().nullable(),
+
+  body: z.string().optional().nullable(),
+
   createdAt: z.coerce.date(),
 })
