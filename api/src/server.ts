@@ -13,6 +13,7 @@ import { listWebhooks } from "./routes/list-webhooks";
 import { env } from "./env";
 import { getWebhook } from "./routes/get-webhook";
 import { deleteWebhook } from "./routes/delete-webhook";
+import { captureWebhook } from "./routes/capture-webhook";
 
 const app = Fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -39,6 +40,7 @@ app.register(scalarApiReference, {
   routePrefix: "/docs",
 });
 
+app.register(captureWebhook);
 app.register(listWebhooks);
 app.register(getWebhook);
 app.register(deleteWebhook);
