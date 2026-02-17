@@ -21,7 +21,7 @@ export function Sidebar() {
       </div>
 
       <Suspense fallback={<p>Carregando...</p>}>
-        {/* <WebhooksList /> */}
+        <WebhooksList />
       </Suspense>
     </div>
   )
