@@ -31,7 +31,6 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
       const parsed = webhookDetailsSchema.safeParse(json)
 
       if (!parsed.success) {
-        console.log(parsed.error)
         throw new Error('Invalid webhook response format')
       }
 

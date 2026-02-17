@@ -1,16 +1,16 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const webhookListItemSchema = z.object({
   id: z.uuidv7(),
   method: z.string(),
   pathname: z.string(),
   createdAt: z.coerce.date(),
-})
+});
 
 export const webhookListSchema = z.object({
   webhooks: z.array(webhookListItemSchema),
   nextCursor: z.string().nullable(),
-})
+});
 
 export const webhookDetailsSchema = z.object({
   id: z.string().uuid(),
@@ -23,11 +23,14 @@ export const webhookDetailsSchema = z.object({
   contentType: z.string().optional().nullable(),
   contentLength: z.number().optional().nullable(),
 
-  queryParams: z.record(z.string(), z.string()).optional().nullable(),
+  queryParams: z
+    .record(z.string(), z.union([z.string(), z.number(), z.boolean()]))
+    .optional()
+    .nullable(),
 
   headers: z.record(z.string(), z.string()),
 
   body: z.string().optional().nullable(),
 
   createdAt: z.coerce.date(),
-})
+});
