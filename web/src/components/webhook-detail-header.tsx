@@ -1,3 +1,4 @@
+import { getMethodStyles } from '../style/getMethodStyles'
 import { Badge } from './ui/badge'
 
 interface WebhookDetailHeaderProps {
@@ -16,8 +17,15 @@ export function WebhookDetailHeader({
   return (
     <div className="space-y-4 border-b border-zinc-700 p-6">
       <div className="flex items-center gap-3">
-        <Badge>{method}</Badge>
-        <span className="text-lg font-medium text-zinc-300">{pathname}</span>
+        <Badge
+          className={`border text-xs font-semibold uppercase ${getMethodStyles(method)}`}
+        >
+          {method}
+        </Badge>
+
+        <span className="text-lg font-medium text-zinc-300">
+          {pathname}
+        </span>
       </div>
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1 text-sm text-zinc-400">
@@ -26,8 +34,8 @@ export function WebhookDetailHeader({
         </div>
         <span className="w-px h-4 bg-zinc-700" />
         <div className="flex items-center gap-1 text-sm text-zinc-400">
-          <span>at</span>
-          <span>{createdAt.toLocaleString('en-US')}</span>
+          <span></span>
+          <span>{createdAt.toLocaleString('pt-BR')}</span>
         </div>
       </div>
     </div>
