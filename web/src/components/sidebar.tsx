@@ -36,7 +36,7 @@ export function Sidebar() {
 
   return (
     <div className="flex h-screen flex-col">
-      <div className="border-b border-zinc-700 px-4 py-5">
+      <div className="px-2 py-4">
         <button
           onClick={handleClick}
           className={`
@@ -54,8 +54,8 @@ export function Sidebar() {
         </button>
       </div>
 
-      <div className="flex items-center gap-2 border-b border-zinc-700 bg-zinc-800 px-4 py-2.5">
-        <div className="flex min-w-0 flex-1 items-center gap-1 text-xs font-mono text-zinc-300">
+      <div className="flex items-center gap-2 px-4 py-2.5">
+        <div className="flex min-w-0 flex-1 items-center bg-zinc-800/80 rounded-2xl gap-1 p-2 text-xs font-mono text-zinc-300">
           <span className="truncate">{WEBHOOK_URL}</span>
         </div>
 

@@ -15,7 +15,7 @@ export function WebhookDetailHeader({
   createdAt,
 }: WebhookDetailHeaderProps) {
   return (
-    <div className="space-y-4 border-b border-zinc-700 p-6">
+    <div className="space-y-3 border-b border-zinc-700 p-6">
       <div className="flex items-center gap-3">
         <Badge
           className={`border text-xs font-semibold uppercase ${getMethodStyles(method)}`}

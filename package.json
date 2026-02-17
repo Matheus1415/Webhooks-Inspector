@@ -7,5 +7,9 @@
 		"api",
 		"web"
 	],
-	"packageManager": "pnpm@10.15.0"
+	"packageManager": "pnpm@10.15.0",
+	"dependencies": {
+		"@ai-sdk/google": "^3.0.29",
+		"ai": "^6.0.89"
+	}
 }
