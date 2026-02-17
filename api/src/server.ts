@@ -14,6 +14,7 @@ import { env } from "./env";
 import { getWebhook } from "./routes/get-webhook";
 import { deleteWebhook } from "./routes/delete-webhook";
 import { captureWebhook } from "./routes/capture-webhook";
+import { openApiDocumentation } from "./docs/into.docs";
 
 const app = Fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -26,13 +27,7 @@ app.register(cors, {
 });
 
 app.register(swagger, {
-  openapi: {
-    info: {
-      title: "Webhooks Inspector API",
-      description: "API para recebimento e inspeção de webhooks",
-      version: "1.0.0",
-    },
-  },
+  ...openApiDocumentation,
   transform: jsonSchemaTransform,
 });
 
