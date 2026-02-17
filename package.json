@@ -24,6 +24,7 @@
   "author": "Matheus Pereira da Silva",
   "license": "ISC",
   "dependencies": {
+    "react-resizable-panels": "^4.6.4",
     "uuidv7": "^1.1.0"
   }
 }
