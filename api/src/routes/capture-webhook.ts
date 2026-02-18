@@ -5,7 +5,7 @@ import { db } from "@/db";
 
 export const captureWebhook: FastifyPluginAsyncZod = async (app) => {
   app.all(
-    "/capture/*",
+    "/capture*",
     {
       schema: {
         summary: "Capture incoming webhook requests",
@@ -34,7 +34,8 @@ export const captureWebhook: FastifyPluginAsyncZod = async (app) => {
             : JSON.stringify(request.body, null, 2);
       }
 
-      const pathname = request.url.replace("/capture", "") || "/";
+      const rawUrl = request.url.split("?")[0];
+      const pathname = rawUrl.replace("/capture", "") || "/";
 
       const headers = Object.fromEntries(
         Object.entries(request.headers).map(([key, value]) => [

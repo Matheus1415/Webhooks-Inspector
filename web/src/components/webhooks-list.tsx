@@ -11,7 +11,7 @@ import { toast } from '../lib/toast'
 import { ScrollArea } from './ui/scroll-area'
 import { Scrollbar } from '@radix-ui/react-scroll-area'
 
-export function WebhooksList() {
+export function WebhooksList({ handleGeneratedHandler }: { handleGeneratedHandler: (isGenerating: boolean) => void }) {
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<IntersectionObserver>(null)
 
@@ -82,19 +82,32 @@ export function WebhooksList() {
   }
 
   async function handleGenerateHandler() {
-    const response = await fetch('http://localhost:3333/api/generate', {
-      method: 'POST',
-      body: JSON.stringify({ webhookIds: checkedWebhooksIds }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    handleGeneratedHandler(true)
+    setGeneratedHandlerCode(null)
 
-    type GenerateResponse = { code: string }
+    const MINIMUM_DISPLAY_TIME = 33000;
 
-    const data: GenerateResponse = await response.json()
+    try {
+      const [response] = await Promise.all([
+        fetch('http://localhost:3333/api/generate', {
+          method: 'POST',
+          body: JSON.stringify({ webhookIds: checkedWebhooksIds }),
+          headers: { 'Content-Type': 'application/json' },
+        }),
+        new Promise(resolve => setTimeout(resolve, MINIMUM_DISPLAY_TIME))
+      ])
 
-    setGeneratedHandlerCode(data.code)
+      if (!response.ok) throw new Error();
+
+      const data: { code: string } = await response.json()
+
+      setGeneratedHandlerCode(data.code)
+
+    } catch (error) {
+      toast.error("Erro ao gerar handler com IA")
+    } finally {
+      handleGeneratedHandler(false)
+    }
   }
 
   const handleCopy = async () => {
@@ -140,6 +153,7 @@ export function WebhooksList() {
             )
           })}
         </div>
+
 
         {hasNextPage && (
           <div className="p-2" ref={loadMoreRef}>

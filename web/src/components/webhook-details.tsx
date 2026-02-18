@@ -22,9 +22,9 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
   const navigate = useNavigate()
 
   const [isCopied, setIsCopied] = useState(false)
-  const [isEditing, setIsEditing] = useState(false) // Controle do modo edição
+  const [isEditing, setIsEditing] = useState(false)
   const [replayUrl, setReplayUrl] = useState("http://localhost:3333/capture")
-  const [editableBody, setEditableBody] = useState("") // Estado para o corpo editável
+  const [editableBody, setEditableBody] = useState("")
 
   const { data } = useSuspenseQuery({
     queryKey: ['webhook', id],
@@ -291,9 +291,9 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
                       }}
                     />
                   ) : (
-                    <ScrollArea className="w-full h-auto max-h-[600px]">
+                    <ScrollArea className="w-full h-[400px]">
+                      <CodeBlock code={editableBody} />
                       <div className="min-w-max p-4">
-                        <CodeBlock code={editableBody} />
                       </div>
                     </ScrollArea>
                   )}
