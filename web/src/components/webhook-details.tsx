@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react' // Adicionado useEffect
+import { useState, useEffect } from 'react'
 import { useMutation, useSuspenseQuery, useQueryClient } from '@tanstack/react-query'
 import { webhookDetailsSchema } from '../http/schemas/webhooks'
 import { WebhookDetailHeader } from './webhook-detail-header'
@@ -7,7 +7,7 @@ import { SectionDataTable } from './section-data-table'
 import { CodeBlock } from './ui/code-block'
 import { ScrollArea } from './ui/scroll-area'
 import { useRouter, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Copy, Check, Loader2, Play, Pencil, Eye, Sparkles } from 'lucide-react'
+import { ArrowLeft, Copy, Check, Loader2, Play, Pencil, Eye, Sparkles, Terminal, Globe, Code2, Share } from 'lucide-react'
 import Editor from '@monaco-editor/react'
 
 import { toast } from '../lib/toast'
@@ -111,6 +111,47 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
     value: String(value),
   }))
 
+  const getExportCommands = (data: any, targetUrl: string) => {
+    const method = data.method.toUpperCase();
+    const headers = {
+      ...data.headers,
+      'Content-Type': 'application/json',
+      'x-inspect-replay': 'true'
+    };
+
+    // cURL
+    const curlHeaders = Object.entries(headers)
+      .map(([k, v]) => `-H "${k}: ${v}"`)
+      .join(' ');
+    const curl = `curl -X ${method} "${targetUrl}" ${curlHeaders} ${data.body ? `-d '${data.body}'` : ''}`;
+
+    // Fetch
+    const fetchCode = `fetch("${targetUrl}", {
+      method: "${method}",
+      headers: ${JSON.stringify(headers, null, 2)},
+      body: ${data.body ? `JSON.stringify(${data.body})` : 'null'}
+    });`;
+
+    // Axios
+    const axiosCode = `import axios from 'axios';
+
+    axios({
+      url: "${targetUrl}",
+      method: "${method}",
+      headers: ${JSON.stringify(headers, null, 2)},
+      data: ${data.body || 'null'}
+    });`;
+
+    return { curl, fetchCode, axiosCode };
+  };
+
+  const { curl, fetchCode, axiosCode } = getExportCommands(data, `${replayUrl.replace(/\/$/, '')}${data.pathname}`);
+
+  const copyToClipboard = async (text: string, label: string) => {
+    await navigator.clipboard.writeText(text);
+    toast.success(`${label} copiado para a área de transferência!`);
+  };
+
   return (
     <div className="relative flex h-full flex-col">
       <WebhookDetailHeader
@@ -145,6 +186,42 @@ export function WebhookDetails({ id }: WebhookDetailsProps) {
                 <SectionTitle>Request Body {isEditing && <span className="text-amber-500 text-xs ml-2">(Editando)</span>}</SectionTitle>
 
                 <div className="flex items-center gap-2">
+
+                  <div className="relative group">
+                    <button className="flex items-center gap-2 rounded-md bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 border border-zinc-700 hover:bg-zinc-700 transition-colors">
+                      <Share className="size-3.5" />
+                      Exportar
+                    </button>
+
+                    <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      <div className="w-48 overflow-hidden rounded-md border border-zinc-800 bg-zinc-900 p-1 shadow-xl">
+                        <button
+                          onClick={() => copyToClipboard(curl, 'cURL')}
+                          className="flex w-full items-center gap-2 px-3 py-2 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors rounded-sm"
+                        >
+                          <Terminal className="size-3.5" />
+                          Copiar como cURL
+                        </button>
+
+                        <button
+                          onClick={() => copyToClipboard(fetchCode, 'Fetch')}
+                          className="flex w-full items-center gap-2 px-3 py-2 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors rounded-sm"
+                        >
+                          <Globe className="size-3.5" />
+                          Copiar como Fetch
+                        </button>
+
+                        <button
+                          onClick={() => copyToClipboard(axiosCode, 'Axios')}
+                          className="flex w-full items-center gap-2 px-3 py-2 text-xs text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors rounded-sm"
+                        >
+                          <Code2 className="size-3.5" />
+                          Copiar como Axios
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                   <input
                     type="text"
                     value={replayUrl}
